@@ -8,6 +8,7 @@ import net.troja.eve.esi.auth.OAuth;
 
 import static com.kgas.eveesi.industry.utils.Shorthands.*;
 import static com.kgas.eveesi.industry.utils.Constants.*;
+import java.util.List;
 
 /**
  *
@@ -24,22 +25,27 @@ public class Client {
         auth.setClientSecret(CLIENT_SECRET);
         auth.setRefreshToken(CLIENT_REFRESH);
         
-        IndustryCycle cycle = null;
+        List<IndustryCycle> cycles = null;
         
         try{
         
-            cycle = IndustryCycle.getIndustryCycleStats(client);
+            cycles = IndustryCycle.generateIndyCycleDataFromApi(client);
         
         }catch(ApiException ae){
             
-            System.out.println("There was a problem with the API.");
-            System.out.println(ae.getMessage());
-            exit(0);
+            ae.printStackTrace();
             
         }
         
-        cycle.printStats();
+        for(IndustryCycle ic : cycles){
+            
+            ic.printStats();
+            ol();
+            
+        }
         
+        
+
     }
     
 }
